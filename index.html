@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LA PRIMA — Empire On Live Concert</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Italiana&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c1116;
+    --bg-2: #161e26;
+    --silver: #b3bec9;
+    --silver-light: #eef2f6;
+    --stone: #c4b69c;
+    --cream: #e2e8f0;
+    --border: rgba(179, 190, 201, 0.2);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--cream);
+    overflow-x: hidden;
+    margin: 0;
+  }
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .display { font-family: 'Italiana', serif; letter-spacing: 0.02em; }
+
+  .accent-text {
+    background: linear-gradient(120deg, #b3bec9 0%, #eef2f6 50%, #c4b69c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .grain::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.7 0 0 0 0 0.74 0 0 0 0 0.8 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+    opacity: 0.06;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://z-cdn-media.chatglm.cn/files/6b50ae23-9a9a-4e23-8b6f-df41e14f9c0f.png?auth_key=1885069920-f98c9eb856034e58ba13a58ab0a61288-0-3ed2ad74186a59915b895eab17f2fe60');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.6) saturate(0.8) contrast(1.05);
+    transform: scale(1.05);
+  }
+  .hero-vignette {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at center, transparent 0%, rgba(12,17,22,0.4) 60%, rgba(12,17,22,0.95) 100%),
+      linear-gradient(to bottom, rgba(12,17,22,0.6) 0%, transparent 30%, transparent 70%, rgba(12,17,22,1) 100%);
+  }
+
+  .particle {
+    position: absolute;
+    background: radial-gradient(circle, rgba(238,242,246,0.7) 0%, rgba(179,190,201,0.2) 50%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float linear infinite;
+  }
+  @keyframes float {
+    0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+    10% { opacity: 1; transform: translateY(90vh) scale(1); }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) translateX(40px) scale(0.5); opacity: 0; }
+  }
+
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 1s cubic-bezier(.16,.84,.3,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--silver) 50%, transparent);
+    opacity: 0.4;
+  }
+
+  .btn-primary {
+    position: relative;
+    background: #eef2f6;
+    color: #0c1116;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 30px -10px rgba(238, 242, 246, 0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    background: #ffffff;
+    box-shadow: 0 15px 40px -10px rgba(238, 242, 246, 0.5);
+  }
+
+  .btn-outline {
+    border: 1px solid var(--silver);
+    color: var(--silver-light);
+    transition: all 0.4s ease;
+    letter-spacing: 0.15em;
+  }
+  .btn-outline:hover {
+    background: var(--silver);
+    color: var(--bg);
+  }
+
+  .glow-card {
+    background: linear-gradient(180deg, rgba(22,30,38,0.7) 0%, rgba(12,17,22,0.9) 100%);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    transition: all 0.6s cubic-bezier(.16,.84,.3,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .glow-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(196,182,156,0.1), transparent 40%);
+    opacity: 0; transition: opacity 0.5s;
+    pointer-events: none;
+  }
+  .glow-card:hover::before { opacity: 1; }
+  .glow-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(179, 190, 201, 0.5);
+  }
+
+  .marquee {
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+  }
+  .marquee-track {
+    display: flex;
+    animation: scroll 30s linear infinite;
+    flex-shrink: 0;
+    gap: 4rem;
+    padding-right: 4rem;
+  }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .stat-num {
+    font-family: 'Italiana', serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    line-height: 1;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0c1116; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--bg-2), var(--silver)); border-radius: 4px; }
+
+  .pill {
+    border: 1px solid var(--border);
+    background: rgba(179, 190, 201, 0.05);
+    backdrop-filter: blur(6px);
+  }
+
+  .date-block {
+    border: 1px solid var(--silver);
+    background: rgba(179, 190, 201, 0.03);
+    backdrop-filter: blur(8px);
+  }
+
+  .sparkle {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: #eef2f6;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #eef2f6, 0 0 20px #b3bec9;
+    animation: sparkle 3s ease-in-out infinite;
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body class="relative">
+
+<div id="particles" class="fixed inset-0 pointer-events-none z-50"></div>
+
+<!-- ============ NAV ============ -->
+<nav class="fixed top-0 left-0 right-0 z-40 px-6 md:px-12 py-4 flex items-center justify-between" style="background: #0c1116; border-bottom: 1px solid rgba(179,190,201,0.15);">
+  <div class="flex items-center gap-3">
+    <img src="logo.png" alt="LA PRIMA" class="h-10 md:h-12 object-contain">
+  </div>
+  <div class="hidden md:flex items-center gap-10 text-xs tracking-[0.25em] uppercase" style="color: rgba(226,232,240,0.7);">
+    <a href="#event" class="hover:text-[#eef2f6] transition">Event</a>
+    <a href="#artists" class="hover:text-[#eef2f6] transition">Line-up</a>
+    <a href="#venue" class="hover:text-[#eef2f6] transition">Venue</a>
+    <a href="#tickets" class="hover:text-[#eef2f6] transition">Tickets</a>
+  </div>
+  <a href="#tickets" class="btn-outline px-5 py-2.5 text-[10px] uppercase rounded-sm hidden sm:inline-block">Reserve</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden grain">
+  <div class="hero-bg"></div>
+  <div class="hero-vignette"></div>
+
+  <div class="sparkle" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+  <div class="sparkle" style="top: 30%; right: 20%; animation-delay: 1s;"></div>
+  <div class="sparkle" style="top: 60%; left: 25%; animation-delay: 2s;"></div>
+  <div class="sparkle" style="top: 70%; right: 30%; animation-delay: 0.5s;"></div>
+  <div class="sparkle" style="top: 15%; left: 60%; animation-delay: 1.5s;"></div>
+
+  <div class="relative z-10 text-center px-6 max-w-5xl mx-auto">
+    <div class="flex items-center justify-center gap-4 mb-6 reveal in">
+      <div class="h-px w-12 bg-[#b3bec9] opacity-60"></div>
+      <span class="text-[10px] md:text-xs tracking-[0.5em] uppercase text-[#b3bec9]">La Prima Presents</span>
+      <div class="h-px w-12 bg-[#b3bec9] opacity-60"></div>
+    </div>
+
+    <h1 class="display text-[3.5rem] md:text-[7rem] lg:text-[8.5rem] leading-[0.95] mb-2 accent-text reveal in">
+      Empire
+    </h1>
+    <p class="serif italic text-2xl md:text-4xl mb-3 text-[#eef2f6]/80 reveal in" style="transition-delay: 0.2s;">on live concert</p>
+
+    <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 mt-8 reveal in" style="transition-delay: 0.4s;">
+      <div class="flex items-center gap-3">
+        <i class="far fa-calendar text-[#b3bec9]"></i>
+        <span class="text-sm tracking-[0.2em] uppercase">15 Août</span>
+      </div>
+      <div class="hidden md:block w-1 h-1 rounded-full bg-[#b3bec9]"></div>
+      <div class="flex items-center gap-3">
+        <i class="fas fa-location-dot text-[#b3bec9]"></i>
+        <span class="text-sm tracking-[0.2em] uppercase">Palais des Sciences</span>
+      </div>
+      <div class="hidden md:block w-1 h-1 rounded-full bg-[#b3bec9]"></div>
+      <div class="flex items-center gap-3">
+        <i class="fas fa-ticket text-[#b3bec9]"></i>
+        <span class="text-sm tracking-[0.2em] uppercase">From 40 DT</span>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 reveal in" style="transition-delay: 0.6s;">
+      <a href="#tickets" class="btn-primary px-10 py-4 rounded-sm text-xs uppercase">
+        <i class="fas fa-ticket mr-2"></i> Get Your Tickets
+      </a>
+      <a href="#event" class="btn-outline px-10 py-4 rounded-sm text-xs uppercase">
+        Discover More
+      </a>
+    </div>
+  </div>
+
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+    <span class="text-[10px] tracking-[0.3em] uppercase text-[#b3bec9]/70">Scroll</span>
+    <div class="w-px h-8 bg-gradient-to-b from-[#b3bec9] to-transparent"></div>
+  </div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee py-3 border-y border-[#b3bec9]/15 bg-[#10161d]">
+  <div class="marquee-track">
+    <span class="display text-3xl md:text-4xl text-[#b3bec9]/30 whitespace-nowrap">Empire On Live</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+    <span class="display text-3xl md:text-4xl text-[#eef2f6]/40 whitespace-nowrap">15 Août 2026</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+    <span class="display text-3xl md:text-4xl text-[#b3bec9]/30 whitespace-nowrap">Palais des Sciences</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+    <span class="display text-3xl md:text-4xl text-[#eef2f6]/40 whitespace-nowrap">La Prima Events</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+    <span class="display text-3xl md:text-4xl text-[#b3bec9]/30 whitespace-nowrap">Empire On Live</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+    <span class="display text-3xl md:text-4xl text-[#eef2f6]/40 whitespace-nowrap">15 Août 2026</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+    <span class="display text-3xl md:text-4xl text-[#b3bec9]/30 whitespace-nowrap">Palais des Sciences</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+    <span class="display text-3xl md:text-4xl text-[#eef2f6]/40 whitespace-nowrap">La Prima Events</span>
+    <span class="text-xl text-[#b3bec9]/30">✦</span>
+  </div>
+</div>
+
+<!-- ============ EVENT SECTION ============ -->
+<section id="event" class="relative py-12 md:py-16 px-6 md:px-12 overflow-hidden grain">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      
+      <div class="reveal">
+        <div class="relative">
+          <img src="https://z-cdn-media.chatglm.cn/files/6b50ae23-9a9a-4e23-8b6f-df41e14f9c0f.png?auth_key=1885069920-f98c9eb856034e58ba13a58ab0a61288-0-3ed2ad74186a59915b895eab17f2fe60" alt="Empire Concert Poster" class="w-full rounded-sm shadow-2xl" style="box-shadow: 0 20px 60px -20px rgba(179,190,201,0.3);">
+          <div class="absolute -inset-4 border border-[#b3bec9]/20 rounded-sm -z-10"></div>
+          <div class="absolute -top-3 -right-3 w-12 h-12 border-t border-r border-[#b3bec9]"></div>
+          <div class="absolute -bottom-3 -left-3 w-12 h-12 border-b border-l border-[#b3bec9]"></div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.2s;">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="h-px w-10 bg-[#b3bec9]"></div>
+          <span class="text-[10px] tracking-[0.4em] uppercase text-[#b3bec9]">The Event</span>
+        </div>
+        <h2 class="display text-4xl md:text-5xl mb-4 accent-text">A Night Of Majesty</h2>
+        <p class="serif text-lg md:text-xl text-[#e2e8f0]/80 leading-relaxed mb-6">
+          Under the arches of <em class="text-[#eef2f6]">Palais des Sciences</em>, La Prima stages an
+          unforgettable evening where music, light, and grandeur converge. 
+          <em>Empire On Live Concert</em> — a singular celebration crafted for those who seek the extraordinary.
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <div class="date-block p-4 rounded-sm">
+            <i class="far fa-calendar text-[#b3bec9] mb-1"></i>
+            <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/50 mb-1">Date</div>
+            <div class="serif text-xl text-[#eef2f6]">15 Août</div>
+          </div>
+          <div class="date-block p-4 rounded-sm">
+            <i class="fas fa-clock text-[#b3bec9] mb-1"></i>
+            <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/50 mb-1">Doors</div>
+            <div class="serif text-xl text-[#eef2f6]">19:00</div>
+          </div>
+          <div class="date-block p-4 rounded-sm">
+            <i class="fas fa-location-dot text-[#b3bec9] mb-1"></i>
+            <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/50 mb-1">Venue</div>
+            <div class="serif text-lg text-[#eef2f6]">Palais des Sciences</div>
+          </div>
+          <div class="date-block p-4 rounded-sm">
+            <i class="fas fa-tag text-[#b3bec9] mb-1"></i>
+            <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/50 mb-1">Entry</div>
+            <div class="serif text-xl text-[#eef2f6]">40 DT</div>
+          </div>
+        </div>
+
+        <a href="#tickets" class="btn-primary inline-block px-8 py-3 rounded-sm text-xs uppercase">
+          Reserve Your Seat <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="relative py-10 px-6 md:px-12 border-y border-[#b3bec9]/15" style="background: linear-gradient(180deg, #10161d 0%, #161e26 50%, #10161d 100%);">
+  <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="text-center reveal">
+      <div class="stat-num accent-text">01</div>
+      <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/60 mt-1">Night Only</div>
+    </div>
+    <div class="text-center reveal" style="transition-delay: 0.1s;">
+      <div class="stat-num accent-text">500+</div>
+      <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/60 mt-1">Guests</div>
+    </div>
+    <div class="text-center reveal" style="transition-delay: 0.2s;">
+      <div class="stat-num accent-text">01</div>
+      <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/60 mt-1">Headliner</div>
+    </div>
+    <div class="text-center reveal" style="transition-delay: 0.3s;">
+      <div class="stat-num accent-text">∞</div>
+      <div class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/60 mt-1">Memories</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARTISTS / LINE-UP ============ -->
+<section id="artists" class="relative py-12 md:py-16 px-6 md:px-12 overflow-hidden grain">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-8 reveal">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="h-px w-10 bg-[#b3bec9]"></div>
+        <span class="text-[10px] tracking-[0.4em] uppercase text-[#b3bec9]">The Line-up</span>
+        <div class="h-px w-10 bg-[#b3bec9]"></div>
+      </div>
+      <h2 class="display text-4xl md:text-6xl accent-text">Featured Artist</h2>
+    </div>
+
+    <div class="glow-card p-6 md:p-8 rounded-sm reveal">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <div class="text-[10px] tracking-[0.3em] uppercase text-[#b3bec9] mb-1">Headliner</div>
+          <h3 class="display text-4xl md:text-5xl text-[#eef2f6]">Empire</h3>
+        </div>
+        <span class="pill px-3 py-1 text-[10px] tracking-[0.2em] uppercase text-[#b3bec9]">Live</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VENUE ============ -->
+<section id="venue" class="relative py-12 md:py-16 px-6 md:px-12 overflow-hidden grain">
+  <div class="max-w-5xl mx-auto text-center">
+    <div class="flex items-center justify-center gap-3 mb-3 reveal">
+      <div class="h-px w-10 bg-[#b3bec9]"></div>
+      <span class="text-[10px] tracking-[0.4em] uppercase text-[#b3bec9]">The Venue</span>
+      <div class="h-px w-10 bg-[#b3bec9]"></div>
+    </div>
+    <h2 class="display text-4xl md:text-6xl mb-4 accent-text reveal" style="transition-delay: 0.1s;">Palais des Sciences</h2>
+    <p class="serif text-lg md:text-xl text-[#e2e8f0]/75 leading-relaxed max-w-3xl mx-auto reveal" style="transition-delay: 0.2s;">
+      A landmark of elegance and intellect, the Palais sets the stage for an evening where architecture and art
+      converse. Every column, every arch — a witness to the empire we'll build in sound.
+    </p>
+    <div class="mt-6 reveal" style="transition-delay: 0.3s;">
+      <a href="https://maps.google.com/?q=Palais+des+Sciences" target="_blank" class="btn-outline inline-block px-8 py-3 rounded-sm text-xs uppercase">
+        <i class="fas fa-map-location-dot mr-2"></i> View On Map
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TICKETS ============ -->
+<section id="tickets" class="relative py-12 md:py-16 px-6 md:px-12 overflow-hidden" style="background: linear-gradient(180deg, #0c1116 0%, #161e26 50%, #0c1116 100%);">
+  <div class="sparkle" style="top: 15%; left: 10%; animation-delay: 0s;"></div>
+  <div class="sparkle" style="top: 25%; right: 15%; animation-delay: 1.2s;"></div>
+  <div class="sparkle" style="bottom: 20%; left: 20%; animation-delay: 2.1s;"></div>
+  <div class="sparkle" style="bottom: 30%; right: 25%; animation-delay: 0.7s;"></div>
+
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-8 reveal">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="h-px w-10 bg-[#b3bec9]"></div>
+        <span class="text-[10px] tracking-[0.4em] uppercase text-[#b3bec9]">Reserve Your Place</span>
+        <div class="h-px w-10 bg-[#b3bec9]"></div>
+      </div>
+      <h2 class="display text-4xl md:text-6xl accent-text">Tickets</h2>
+    </div>
+
+    <div class="glow-card p-6 md:p-8 rounded-sm reveal relative" style="border-color: rgba(179,190,201,0.5);">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-[#eef2f6] text-[#0c1116] text-[10px] tracking-[0.3em] uppercase rounded-sm">Available Now</div>
+      <div class="text-center">
+        <div class="text-[10px] tracking-[0.4em] uppercase text-[#b3bec9] mb-2">General Access</div>
+        <div class="flex items-baseline justify-center gap-2 mb-4">
+          <span class="display text-6xl md:text-7xl accent-text">40</span>
+          <span class="serif text-2xl text-[#eef2f6]/70">DT</span>
+        </div>
+        <div class="divider mb-6"></div>
+        <ul class="space-y-2 serif text-lg text-[#e2e8f0]/80 max-w-md mx-auto text-left">
+          <li class="flex items-start gap-3"><i class="fas fa-check text-[#b3bec9] mt-1.5 text-sm"></i> Full concert access</li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-[#b3bec9] mt-1.5 text-sm"></i> Premium seating</li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-[#b3bec9] mt-1.5 text-sm"></i> Welcome drink included</li>
+          <li class="flex items-start gap-3"><i class="fas fa-check text-[#b3bec9] mt-1.5 text-sm"></i> Exclusive La Prima gift</li>
+        </ul>
+        <a href="tel:54454582" class="btn-primary inline-block mt-6 px-8 py-3 rounded-sm text-xs uppercase">
+          Reserve Your Ticket <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-8 text-center reveal">
+      <div class="divider mb-6"></div>
+      <div class="text-[10px] tracking-[0.4em] uppercase text-[#b3bec9] mb-3">Info Line</div>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10">
+        <a href="tel:54454582" class="serif text-xl md:text-2xl text-[#eef2f6] hover:accent-text transition flex items-center gap-3">
+          <i class="fas fa-phone text-[#b3bec9] text-base"></i> 54 454 582
+        </a>
+        <div class="hidden md:block w-1 h-1 rounded-full bg-[#b3bec9]"></div>
+        <a href="tel:25204620" class="serif text-xl md:text-2xl text-[#eef2f6] hover:accent-text transition flex items-center gap-3">
+          <i class="fas fa-phone text-[#b3bec9] text-base"></i> 25 204 620
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="relative py-8 px-6 md:px-12 border-t border-[#b3bec9]/15 grain" style="background: #0c1116;">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col items-center text-center">
+      <img src="logo.png" alt="LA PRIMA" class="h-14 md:h-16 object-contain mb-4">
+      <p class="serif italic text-lg text-[#e2e8f0]/60 mb-1">Crafting unforgettable moments.</p>
+      <p class="text-xs tracking-[0.2em] uppercase text-[#b3bec9]/70 mb-6">Empire On Live Concert · 15 Août</p>
+      
+      <div class="flex items-center gap-4 mb-6">
+        <a href="mailto:primaevents.professionnel@gmail.com" class="w-9 h-9 rounded-full border border-[#b3bec9]/30 flex items-center justify-center text-[#b3bec9] hover:bg-[#b3bec9] hover:text-[#0c1116] transition">
+          <i class="far fa-envelope text-sm"></i>
+        </a>
+        <a href="tel:54454582" class="w-9 h-9 rounded-full border border-[#b3bec9]/30 flex items-center justify-center text-[#b3bec9] hover:bg-[#b3bec9] hover:text-[#0c1116] transition">
+          <i class="fas fa-phone text-sm"></i>
+        </a>
+        <a href="https://www.instagram.com/prima_events._?igsh=MXhpNzJsa3F1Mmh3eA==" target="_blank" class="w-9 h-9 rounded-full border border-[#b3bec9]/30 flex items-center justify-center text-[#b3bec9] hover:bg-[#b3bec9] hover:text-[#0c1116] transition">
+          <i class="fab fa-instagram text-sm"></i>
+        </a>
+        <a href="https://www.tiktok.com/@prima.events8?_t=ZS-98M7tUiLx2K" target="_blank" class="w-9 h-9 rounded-full border border-[#b3bec9]/30 flex items-center justify-center text-[#b3bec9] hover:bg-[#b3bec9] hover:text-[#0c1116] transition">
+          <i class="fab fa-tiktok text-sm"></i>
+        </a>
+      </div>
+
+      <div class="divider w-full max-w-md mb-4"></div>
+      <p class="text-[10px] tracking-[0.3em] uppercase text-[#e2e8f0]/40">
+        © 2026 La Prima Events · All Rights Reserved
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    const container = document.getElementById('particles');
+    const count = 25;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 1;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (Math.random() * 15 + 12) + 's';
+      p.style.animationDelay = (Math.random() * 15) + 's';
+      p.style.opacity = (Math.random() * 0.5 + 0.3).toString();
+      container.appendChild(p);
+    }
+  })();
+
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(r => io.observe(r));
+
+  document.querySelectorAll('.glow-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+
+  const heroBg = document.querySelector('.hero-bg');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (heroBg && y < window.innerHeight) {
+      heroBg.style.transform = `scale(1.05) translateY(${y * 0.3}px)`;
+    }
+  }, { passive: true });
+</script>
+
+</body>
+</html>
